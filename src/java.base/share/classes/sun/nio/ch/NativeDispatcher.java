@@ -69,11 +69,24 @@ abstract class NativeDispatcher {
 
     abstract void close(FileDescriptor fd) throws IOException;
 
-    // Prepare the given fd for closing by duping it to a known internal fd
-    // that's already closed.  This is necessary on some operating systems
-    // (Solaris and Linux) to prevent fd recycling.
-    //
-    void preClose(FileDescriptor fd) throws IOException {
+    /**
+      * Prepare the given file descriptor for closing. If a virtual thread is blocked
+      * on the file descriptor then it is unparked so that it stops polling. On Unix systems,
+      * if a platform thread is blocked on the file descriptor then the file descriptor is
+      * dup'ed to a special fd and the thread signalled so that the syscall fails with EINTR.
+      */
+     final void preClose(FileDescriptor fd, long reader, long writer) throws IOException {
+         if (NativeThread.isNativeThread(reader) || NativeThread.isNativeThread(writer)) {
+             implPreClose(fd, reader, writer);
+         }
+     }
+ 
+     /**
+      * This method does nothing by default. On Unix systems the file descriptor is dup'ed
+      * to a special fd and native threads signalled.
+      */
+ 
+     void implPreClose(FileDescriptor fd, long reader, long writer) throws IOException {
         // Do nothing by default; this is only needed on Unix
     }
 

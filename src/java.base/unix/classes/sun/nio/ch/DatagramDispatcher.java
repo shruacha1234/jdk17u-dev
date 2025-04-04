@@ -39,43 +39,40 @@ class DatagramDispatcher extends NativeDispatcher {
         IOUtil.load();
     }
 
+    @Override
     int read(FileDescriptor fd, long address, int len) throws IOException {
         return read0(fd, address, len);
     }
 
+    @Override
     long readv(FileDescriptor fd, long address, int len) throws IOException {
         return readv0(fd, address, len);
     }
 
+    @Override
     int write(FileDescriptor fd, long address, int len) throws IOException {
         return write0(fd, address, len);
     }
 
+    @Override
     long writev(FileDescriptor fd, long address, int len) throws IOException {
         return writev0(fd, address, len);
     }
 
-    void close(FileDescriptor fd) throws IOException {
-        FileDispatcherImpl.close0(fd);
-    }
-
-    void preClose(FileDescriptor fd) throws IOException {
-        FileDispatcherImpl.preClose0(fd);
-    }
-
+    @Override
     void dup(FileDescriptor fd1, FileDescriptor fd2) throws IOException {
         FileDispatcherImpl.dup0(fd1, fd2);
     }
 
-    static native int read0(FileDescriptor fd, long address, int len)
+    private static native int read0(FileDescriptor fd, long address, int len)
         throws IOException;
 
-    static native long readv0(FileDescriptor fd, long address, int len)
+    private static native long readv0(FileDescriptor fd, long address, int len)
         throws IOException;
 
-    static native int write0(FileDescriptor fd, long address, int len)
+    private static native int write0(FileDescriptor fd, long address, int len)
         throws IOException;
 
-    static native long writev0(FileDescriptor fd, long address, int len)
+    private static native long writev0(FileDescriptor fd, long address, int len)
         throws IOException;
 }

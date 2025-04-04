@@ -43,6 +43,7 @@ class SocketDispatcher extends NativeDispatcher {
      * @throws sun.net.ConnectionResetException if connection reset is detected
      * @throws IOException if another I/O error occurs
      */
+    @Override
     int read(FileDescriptor fd, long address, int len) throws IOException {
         return read0(fd, address, len);
     }
@@ -54,24 +55,19 @@ class SocketDispatcher extends NativeDispatcher {
      * @throws sun.net.ConnectionResetException if connection reset is detected
      * @throws IOException if another I/O error occurs
      */
+    @Override
     long readv(FileDescriptor fd, long address, int len) throws IOException {
         return readv0(fd, address, len);
     }
 
+    @Override
     int write(FileDescriptor fd, long address, int len) throws IOException {
         return FileDispatcherImpl.write0(fd, address, len);
     }
 
+    @Override
     long writev(FileDescriptor fd, long address, int len) throws IOException {
         return FileDispatcherImpl.writev0(fd, address, len);
-    }
-
-    void close(FileDescriptor fd) throws IOException {
-        FileDispatcherImpl.close0(fd);
-    }
-
-    void preClose(FileDescriptor fd) throws IOException {
-        FileDispatcherImpl.preClose0(fd);
     }
 
     // -- Native methods --

@@ -104,8 +104,13 @@ class FileDispatcherImpl extends FileDispatcher {
         fdAccess.close(fd);
     }
 
-    void preClose(FileDescriptor fd) throws IOException {
-        preClose0(fd);
+   @Override
+     void implPreClose(FileDescriptor fd, long reader, long writer) throws IOException {
+         preClose0(fd);
+         if (NativeThread.isNativeThread(reader))
+             NativeThread.signal(reader);
+         if (NativeThread.isNativeThread(writer))
+             NativeThread.signal(writer);
     }
 
     void dup(FileDescriptor fd1, FileDescriptor fd2) throws IOException {
