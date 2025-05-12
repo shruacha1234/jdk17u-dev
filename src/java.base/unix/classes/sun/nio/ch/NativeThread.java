@@ -38,6 +38,20 @@ package sun.nio.ch;
 
 
 public class NativeThread {
+    /**
+     * Return true if the operating system supports pending signals. If a signal is sent
+     * to a thread but cannot be delivered immediately then it will be delivered when the
+     * thread is in the appropriate state.
+     */
+    static boolean supportPendingSignals() {
+        return supportPendingSignals0();
+    }
+
+    private static native boolean supportPendingSignals0();
+
+    static boolean isNativeThread(long tid) {
+         return false;
+     }
 
     // Returns an opaque token representing the native thread underlying the
     // invoking Java thread.  On systems that do not require signalling, this
