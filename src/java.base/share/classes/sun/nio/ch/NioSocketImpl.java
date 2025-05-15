@@ -78,7 +78,7 @@ import static java.util.concurrent.TimeUnit.NANOSECONDS;
  */
 
 public final class NioSocketImpl extends SocketImpl implements PlatformSocketImpl {
-    private static final NativeDispatcher nd = new SocketDispatcher();
+    private static final NativeDispatcher nd = new NativeDispatcher();
 
     // The maximum number of bytes to read/write per syscall to avoid needing
     // a huge buffer from the temporary buffer cache
@@ -909,13 +909,7 @@ public final class NioSocketImpl extends SocketImpl implements PlatformSocketImp
             // then the socket is pre-closed and the thread(s) signalled. The
             // last thread will close the file descriptor.
             if (!tryClose()) {
-                nd.preClose(fd);
-                long reader = readerThread;
-                if (reader != 0)
-                    NativeThread.signal(reader);
-                long writer = writerThread;
-                if (writer != 0)
-                    NativeThread.signal(writer);
+                nd.preClose(fd, readerThread, writerThread);
             }
         }
     }
