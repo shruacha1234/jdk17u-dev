@@ -42,7 +42,7 @@ class SourceChannelImpl
     implements SelChImpl
 {
     // Used to make native read and write calls
-    private static final NativeDispatcher nd = new FileDispatcherImpl();
+    private static final NativeDispatcher nd = new NativeDispatcher();
 
     // The file descriptor associated with this channel
     private final FileDescriptor fd;
@@ -121,11 +121,7 @@ class SourceChannelImpl
             assert state < ST_CLOSING;
             state = ST_CLOSING;
             if (!tryClose()) {
-                long th = thread;
-                if (th != 0) {
-                    nd.preClose(fd);
-                    NativeThread.signal(th);
-                }
+                nd.preClose(fd, thread, 0);
             }
         }
     }

@@ -34,6 +34,7 @@ import java.io.IOException;
  */
 
 abstract class NativeDispatcher {
+    private static final boolean SUPPORTS_PENDING_SIGNALS = NativeThread.supportPendingSignals();
 
     abstract int read(FileDescriptor fd, long address, int len)
         throws IOException;
@@ -93,7 +94,7 @@ abstract class NativeDispatcher {
         if (SUPPORTS_PENDING_SIGNALS) {
             signalThreads(reader, writer);
         }
-        preClose0(fd);
+        FileDispatcherImpl.preClose0(fd);
         if (!SUPPORTS_PENDING_SIGNALS) {
             signalThreads(reader, writer);
         }

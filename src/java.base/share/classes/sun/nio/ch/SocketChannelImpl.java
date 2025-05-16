@@ -73,7 +73,7 @@ class SocketChannelImpl
     implements SelChImpl
 {
     // Used to make native read and write calls
-    private static final NativeDispatcher nd = new SocketDispatcher();
+    private static final NativeDispatcher nd = new NativeDispatcher();
 
     // The protocol family of the socket
     private final ProtocolFamily family;
@@ -1011,15 +1011,7 @@ class SocketChannelImpl
             assert state < ST_CLOSING;
             state = ST_CLOSING;
             if (!tryClose()) {
-                long reader = readerThread;
-                long writer = writerThread;
-                if (reader != 0 || writer != 0) {
-                    nd.preClose(fd);
-                    if (reader != 0)
-                        NativeThread.signal(reader);
-                    if (writer != 0)
-                        NativeThread.signal(writer);
-                }
+                nd.preClose(fd, readerThread, writerThread);
             }
         }
     }
