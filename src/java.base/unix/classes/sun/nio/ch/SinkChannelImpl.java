@@ -42,7 +42,7 @@ class SinkChannelImpl
     implements SelChImpl
 {
     // Used to make native read and write calls
-    private static final NativeDispatcher nd = new NativeDispatcher();
+    private static final NativeDispatcher nd = new FileDispatcherImpl();
 
     // The file descriptor associated with this channel
     private final FileDescriptor fd;

@@ -73,7 +73,7 @@ class SocketChannelImpl
     implements SelChImpl
 {
     // Used to make native read and write calls
-    private static final NativeDispatcher nd = new NativeDispatcher();
+    private static final NativeDispatcher nd = new SocketDispatcher();
 
     // The protocol family of the socket
     private final ProtocolFamily family;

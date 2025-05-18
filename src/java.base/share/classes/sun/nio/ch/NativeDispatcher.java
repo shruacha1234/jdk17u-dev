@@ -89,7 +89,6 @@ abstract class NativeDispatcher {
             NativeThread.signal(writer);
     }
 
-    @Override
     void implPreClose(FileDescriptor fd, long reader, long writer) throws IOException {
         if (SUPPORTS_PENDING_SIGNALS) {
             signalThreads(reader, writer);

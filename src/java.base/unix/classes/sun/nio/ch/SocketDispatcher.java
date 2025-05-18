@@ -70,10 +70,6 @@ class SocketDispatcher extends NativeDispatcher {
         FileDispatcherImpl.close0(fd);
     }
 
-    void preClose(FileDescriptor fd) throws IOException {
-        FileDispatcherImpl.preClose0(fd);
-    }
-
     // -- Native methods --
 
     private static native int read0(FileDescriptor fd, long address, int len)
